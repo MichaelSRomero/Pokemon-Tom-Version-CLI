@@ -19,3 +19,11 @@ end
 fire_types = fetch_api("fire")
 water_types = fetch_api("water")
 grass_types = fetch_api("grass")
+
+# --------------------------------
+# i = 0
+# until i == 20 do
+#   pkmn_name = grass_types["pokemon"][i]["pokemon"]["name"]
+#   Pkmn.create(name: pkmn_name, element: "grass")
+#   i += 1
+# end
