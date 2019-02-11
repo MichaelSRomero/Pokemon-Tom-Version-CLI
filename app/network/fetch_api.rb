@@ -1,19 +1,21 @@
 require 'rest-client'
 require 'json'
-require 'pry'
 
 # KEYS (TYPE) ----------- https://pokeapi.co/api/v2/type/#{type_name}/ Fire, Water, Grass
 #   name | pokemon (arr)
 #         POKEMON-KEYS: pokemon["pokemon"] (hash)
 #                     KEYS: ["name"] | ["url"]
 
+# 20 of each type
+# Water type count = 145
+# Fire type count = 76
+# Grass type count = 110
 
-  # Might require argument name
-def fetch_api
-  # raw_response = RestClient.get("https://pokeapi.co/api/v2/pokemon/#{name}")
-  raw_response = RestClient.get("https://pokeapi.co/api/v2/type/fire/")
+def fetch_api(type_name)
+  raw_response = RestClient.get("https://pokeapi.co/api/v2/type/#{type_name}/")
   json_response = JSON.parse(raw_response)
-  # https://pokeapi.co/api/v2/type/fire/
 end
 
-# binding.pry
+fire_types = fetch_api("fire")
+water_types = fetch_api("water")
+grass_types = fetch_api("grass")
