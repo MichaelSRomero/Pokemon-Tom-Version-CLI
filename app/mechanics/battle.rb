@@ -68,14 +68,12 @@ def battle(arr, i, user)
       end
     else
       pokemon = UserPkmn.find_by pkmn_id: my_type.id, user_id: User.all[0].id
-      puts pokemon.nickname
       pokemon.win += 1
       pokemon.save
     end
   else
     puts "You Lose!"
     if (UserPkmn.find_by pkmn_id: my_type.id, user_id: user.id) == nil
-      puts "test"
       UserPkmn.create(win: 0, loss: 1, user_id: user.id, pkmn_id: my_type.id)
     else
       pokemon = UserPkmn.find_by pkmn_id: my_type.id, user_id: User.all[0].id
