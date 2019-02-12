@@ -3,7 +3,6 @@ def log_in_menu
   sleep(1.5)
   prompt = TTY::Prompt.new(active_color: :cyan)
 
-  # choices = {"New User" => 1, "Existing User" => 2}
   until false
     prompt.select("Are you an existing or new player?") do |menu|
       menu.choice "New User", -> {new_user}

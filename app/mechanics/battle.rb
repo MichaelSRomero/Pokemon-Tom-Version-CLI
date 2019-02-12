@@ -16,6 +16,9 @@
 def setup(user)
   stop_music
   load_battle_music
+  sleep(1)
+  load_battle_animation
+  system "clear"
   prompt = TTY::Prompt.new(active_color: :cyan)
   random = Pkmn.all.sample(6)
 
@@ -23,6 +26,7 @@ def setup(user)
 
   # First Battle Choice
   prompt.say("Whoa! A horde of wild Pokemon appeared!")
+  sleep(0.5)
   prompt.select("Choose your Pokemon") do |menu|
     menu.enum ')'
 
@@ -51,7 +55,7 @@ def setup(user)
     menu.choice random[0], -> {battle(random, 0, user)}
     menu.choice random[1], -> {battle(random, 1, user)}
   end
-
+  stop_music
 end
 
 def battle(arr, i, user)
