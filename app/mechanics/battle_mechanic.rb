@@ -80,10 +80,13 @@ def draw_game
     menu.choice "Rock"
     menu.choice "Paper"
     menu.choice "Scissor"
+    menu.choice "Surrender"
   end
   opponent = [:Rock, :Paper, :Scissor].sample
   puts "Your opponent throws out a #{opponent.to_s}!"
-  if rule[opponent] == hand
+  if hand == "Surrender"
+    return "lose"
+  elsif rule[opponent] == hand
     loss
   elsif rule[hand.to_sym] == opponent.to_s
     win
