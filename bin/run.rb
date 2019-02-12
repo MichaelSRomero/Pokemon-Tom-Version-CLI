@@ -1,5 +1,6 @@
 require_relative '../config/environment'
 
+<<<<<<< HEAD
 # def test
 #   fire_types = fetch_api("fire")
 #   fire_types["pokemon"][0]["pokemon"]["name"]
@@ -24,6 +25,9 @@ puts "
   ██║     ╚██████╔╝██║  ██╗███████╗██║ ╚═╝ ██║╚██████╔╝██║ ╚████║
   ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
                         -  TOM VERSION -
+=======
+setup
+>>>>>>> james
 
                                           * James Kang
                                           * Michael Romero
