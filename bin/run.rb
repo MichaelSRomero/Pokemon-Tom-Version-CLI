@@ -17,7 +17,7 @@ require_relative '../config/environment'
 
 # http://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow&t=About%20us
 
-intro_music
+load_intro_music
 puts "
   ██████╗  ██████╗ ██╗  ██╗███████╗███╗   ███╗ ██████╗ ███╗   ██╗
   ██╔══██╗██╔═══██╗██║ ██╔╝██╔════╝████╗ ████║██╔═══██╗████╗  ██║

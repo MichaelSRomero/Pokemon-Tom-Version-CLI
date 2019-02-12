@@ -1,4 +1,6 @@
 def display_user_menu(user)
+  stop_music
+  load_user_menu_music
   prompt = TTY::Prompt.new(active_color: :cyan)
 
   prompt.select("\n#{user.name.upcase}\'s MENU") do |menu|
