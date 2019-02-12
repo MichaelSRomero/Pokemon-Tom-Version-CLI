@@ -8,10 +8,19 @@ def display_user_menu(user)
       menu.choice "Battle!", -> {setup(user)}
       menu.choice "Battle Record", -> {battle_record(user)}
       menu.choice "My Pokemon", -> {my_pokemon(user)}
-      menu.choice "Change Name", -> {"Changing name to ----"}
+      menu.choice "Change Name", -> {change_name(user)}
       menu.choice "Exit", -> {exit_menu(user)}
     end
   end
+end
+
+def change_name(user)
+  prompt = TTY::Prompt.new(active_color: :cyan)
+  new_name = prompt.ask("Enter your new name:") do |q|
+    q.required true
+  end
+  user.name = new_name
+  user.save
 end
 
 def my_pokemon(user)
