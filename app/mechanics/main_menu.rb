@@ -19,6 +19,7 @@ def load_user
 
   if user != nil
     prompt.say("Welcome back #{user.name}!")
+    display_user_menu(user)
   else
     prompt.error("Sorry, could not find user: >>> #{user_name} <<<")
   end
