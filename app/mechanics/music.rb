@@ -1,5 +1,5 @@
 def play_music(file)
-  fork{ exec 'afplay', "#{file}"}
+    fork{ exec 'afplay', "#{file}"}
 end
 
 def stop_music
@@ -12,7 +12,7 @@ def load_intro_music
 end
 
 def load_user_menu_music
-  play_music("sound/pkmn-pokemon center.mp3")
+    play_music("sound/pkmn-pokemon center.mp3")
 end
 
 def load_battle_music

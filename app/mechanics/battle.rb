@@ -14,9 +14,15 @@
 # end
 
 def setup(user)
+  stop_music
+  load_battle_music
   prompt = TTY::Prompt.new(active_color: :cyan)
   random = Pkmn.all.sample(6)
+
   random.map! { |pokemon| pokemon.name.capitalize  }
+
+  # First Battle Choice
+  prompt.say("Whoa! A horde of wild Pokemon appeared!")
   prompt.select("Choose your Pokemon") do |menu|
     menu.enum ')'
 
@@ -28,6 +34,7 @@ def setup(user)
     menu.choice random[5], -> {battle(random, 5, user)}
   end
 
+  # Second Battle Choice
   prompt.select("Choose your Pokemon") do |menu|
     menu.enum ')'
 
@@ -37,6 +44,7 @@ def setup(user)
     menu.choice random[3], -> {battle(random, 3, user)}
   end
 
+  # Last Battle Choice
   prompt.select("Choose your Pokemon") do |menu|
     menu.enum ')'
 
@@ -50,6 +58,7 @@ def battle(arr, i, user)
   prompt = TTY::Prompt.new(active_color: :cyan)
   my_type = (Pkmn.find_by name: arr[i].downcase)
   opponent_type = (Pkmn.find_by name: opponent(arr, i).downcase)
+
   if battle_mechanic(my_type.element, opponent_type.element) == "win"
     puts "You Win!"
     if (UserPkmn.find_by pkmn_id: my_type.id, user_id: user.id) == nil
@@ -82,6 +91,7 @@ def opponent(arr, i)
   num = rand(arr.length)
   opponent = arr[num]
   delete_choice(arr, num)
+
   puts "Your opponent is #{opponent}"
   return opponent
 end
@@ -89,6 +99,8 @@ end
 def delete_choice(arr, i)
   arr.delete_at(i)
 end
+
+# ------- CAPTURE METHODS -------- #
 
 def yes_capture(user, pokemon)
   prompt = TTY::Prompt.new(active_color: :cyan)
