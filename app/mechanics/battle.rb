@@ -47,9 +47,9 @@ def setup
 end
 
 def battle(arr, i)
-  my_type = (Pkmn.find_by name: arr[i].downcase).element
-  opponent_type = (Pkmn.find_by name: opponent(arr, i).downcase).element
-  if battle_mechanic(my_type, opponent_type) == "win"
+  my_type = (Pkmn.find_by name: arr[i].downcase)
+  opponent_type = (Pkmn.find_by name: opponent(arr, i).downcase)
+  if battle_mechanic(my_type.element, opponent_type.element) == "win"
     puts "You Win!"
   else
     puts "You Lose!"
