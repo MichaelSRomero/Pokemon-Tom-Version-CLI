@@ -13,62 +13,66 @@
 #   # end
 # end
 
-def setup
+def setup(user)
   prompt = TTY::Prompt.new(active_color: :cyan)
   random = Pkmn.all.sample(6)
   random.map! { |pokemon| pokemon.name.capitalize  }
   prompt.select("Choose your Pokemon") do |menu|
     menu.enum ')'
 
-    menu.choice random[0], -> {battle(random, 0)}
-    menu.choice random[1], -> {battle(random, 1)}
-    menu.choice random[2], -> {battle(random, 2)}
-    menu.choice random[3], -> {battle(random, 3)}
-    menu.choice random[4], -> {battle(random, 4)}
-    menu.choice random[5], -> {battle(random, 5)}
+    menu.choice random[0], -> {battle(random, 0, user)}
+    menu.choice random[1], -> {battle(random, 1, user)}
+    menu.choice random[2], -> {battle(random, 2, user)}
+    menu.choice random[3], -> {battle(random, 3, user)}
+    menu.choice random[4], -> {battle(random, 4, user)}
+    menu.choice random[5], -> {battle(random, 5, user)}
   end
 
   prompt.select("Choose your Pokemon") do |menu|
     menu.enum ')'
 
-    menu.choice random[0], -> {battle(random, 0)}
-    menu.choice random[1], -> {battle(random, 1)}
-    menu.choice random[2], -> {battle(random, 2)}
-    menu.choice random[3], -> {battle(random, 3)}
+    menu.choice random[0], -> {battle(random, 0, user)}
+    menu.choice random[1], -> {battle(random, 1, user)}
+    menu.choice random[2], -> {battle(random, 2, user)}
+    menu.choice random[3], -> {battle(random, 3, user)}
   end
 
   prompt.select("Choose your Pokemon") do |menu|
     menu.enum ')'
 
-    menu.choice random[0], -> {battle(random, 0)}
-    menu.choice random[1], -> {battle(random, 1)}
+    menu.choice random[0], -> {battle(random, 0, user)}
+    menu.choice random[1], -> {battle(random, 1, user)}
   end
 
 end
 
-def battle(arr, i)
+def battle(arr, i, user)
   prompt = TTY::Prompt.new(active_color: :cyan)
   my_type = (Pkmn.find_by name: arr[i].downcase)
   opponent_type = (Pkmn.find_by name: opponent(arr, i).downcase)
   if battle_mechanic(my_type.element, opponent_type.element) == "win"
     puts "You Win!"
-    if (UserPkmn.find_by pkmn_id: my_type.id, user_id: User.all[0].id) == nil
+    if (UserPkmn.find_by pkmn_id: my_type.id, user_id: user.id) == nil
       prompt.select("Catch this Pokemon?") do |menu|
-        menu.choice "Yes", 1
-        menu.choice "No", 2
+        menu.choice "Yes", -> {yes_capture(user,my_type)}
+        menu.choice "No", -> {no_capture(user, my_type)}
       end
     else
-      # pokemon = UserPkmn.find_by pkmn_id: my_type.id, user_id: User.all[0].id
-      # pokemon.win += 1
+      pokemon = UserPkmn.find_by pkmn_id: my_type.id, user_id: User.all[0].id
+      puts pokemon.nickname
+      pokemon.win += 1
+      pokemon.save
     end
   else
     puts "You Lose!"
-    if (UserPkmn.find_by pkmn_id: my_type.id, user_id: User.all[0].id) == nil
+    if (UserPkmn.find_by pkmn_id: my_type.id, user_id: user.id) == nil
       puts "test"
-      # UserPkmn.create(win: 0, loss: 1, user_id: user.id, pkmn_id: pokemon.id)
+      UserPkmn.create(win: 0, loss: 1, user_id: user.id, pkmn_id: my_type.id)
     else
-      # pokemon = UserPkmn.find_by pkmn_id: my_type.id, user_id: User.all[0].id
-      # pokemon.loss += 1
+      pokemon = UserPkmn.find_by pkmn_id: my_type.id, user_id: User.all[0].id
+      puts pokemon.nickname
+      pokemon.loss += 1
+      pokemon.save
     end
   end
 end
@@ -86,18 +90,12 @@ def delete_choice(arr, i)
   arr.delete_at(i)
 end
 
+def yes_capture(user, pokemon)
+  prompt = TTY::Prompt.new(active_color: :cyan)
+  nickname = prompt.ask("Nickname your Pokemon:", default: pokemon.name.capitalize)
+  UserPkmn.create(nickname: nickname, win: 1, loss: 0, captured: true, user_id: user.id, pkmn_id: pokemon.id)
+end
 
-
-# def yes_capture(user, pokemon)
-#   prompt = TTY::Prompt.new(active_color: :cyan)
-#   nickname = prompt.ask("Nickname your Pokemon:", default: pokemon.id.capitalize)
-#   UserPkmn.create(nickname: nickname win: 1, loss: 0, captured: true user_id: user.id, pkmn_id: pokemon.id)
-# end
-
-# def no_capture(user, pokemon)
-#   UserPkmn.create(win: 1, loss: 0, user_id: user.id, pkmn_id: pokemon.id)
-# end
-
-def loss
-
+def no_capture(user, pokemon)
+  UserPkmn.create(win: 1, loss: 0, user_id: user.id, pkmn_id: pokemon.id)
 end
