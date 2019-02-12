@@ -47,12 +47,29 @@ def setup
 end
 
 def battle(arr, i)
+  prompt = TTY::Prompt.new(active_color: :cyan)
   my_type = (Pkmn.find_by name: arr[i].downcase)
   opponent_type = (Pkmn.find_by name: opponent(arr, i).downcase)
   if battle_mechanic(my_type.element, opponent_type.element) == "win"
     puts "You Win!"
+    if (UserPkmn.find_by pkmn_id: my_type.id, user_id: User.all[0].id) == nil
+      prompt.select("Catch this Pokemon?") do |menu|
+        menu.choice "Yes", 1
+        menu.choice "No", 2
+      end
+    else
+      # pokemon = UserPkmn.find_by pkmn_id: my_type.id, user_id: User.all[0].id
+      # pokemon.win += 1
+    end
   else
     puts "You Lose!"
+    if (UserPkmn.find_by pkmn_id: my_type.id, user_id: User.all[0].id) == nil
+      puts "test"
+      # UserPkmn.create(win: 0, loss: 1, user_id: user.id, pkmn_id: pokemon.id)
+    else
+      # pokemon = UserPkmn.find_by pkmn_id: my_type.id, user_id: User.all[0].id
+      # pokemon.loss += 1
+    end
   end
 end
 
@@ -67,4 +84,20 @@ end
 
 def delete_choice(arr, i)
   arr.delete_at(i)
+end
+
+
+
+# def yes_capture(user, pokemon)
+#   prompt = TTY::Prompt.new(active_color: :cyan)
+#   nickname = prompt.ask("Nickname your Pokemon:", default: pokemon.id.capitalize)
+#   UserPkmn.create(nickname: nickname win: 1, loss: 0, captured: true user_id: user.id, pkmn_id: pokemon.id)
+# end
+
+# def no_capture(user, pokemon)
+#   UserPkmn.create(win: 1, loss: 0, user_id: user.id, pkmn_id: pokemon.id)
+# end
+
+def loss
+
 end
