@@ -35,8 +35,9 @@ def trainer_setup(user)
 end
 
 def find_opp(user)
+  user_info = user
   opp = User.all.sample
-  if opp == user
+  if opp == user_info
     find_opp
   else
     return opp
