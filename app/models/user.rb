@@ -31,14 +31,8 @@ class User < ActiveRecord::Base
         puts "#{user_choice} fainted."
         puts "You Lose!"
 
-        if user_pokemon_stat == nil
-          UserPkmn.create(win: 0, loss: 1, user_id: self.id, pkmn_id: user_pokemon.id)
-        else
-          user_pokemon_stat.loss += 1
-          user_pokemon_stat.save
-        end
+        loss_menu(user_pokemon, user_pokemon_stat)
         user_party.delete(user_choice)
-
       # if user win.
       elsif battle_mech(user_type, opp_type) == "win"
         puts "#{user_choice} was super effective against #{opp_choice}!"
@@ -46,17 +40,7 @@ class User < ActiveRecord::Base
         sleep (0.75)
         puts "You Win!"
 
-        # checking for if pokemon is captured.
-        binding.pry
-        if user_pokemon_stat == nil || user_pokemon_stat.captured == false
-          prompt.select("Catch this Pokemon?") do |menu|
-            menu.choice "Yes", -> {yes_capture2(user_pokemon, user_pokemon_stat)}
-            menu.choice "No", -> {no_capture2(user_pokemon, user_pokemon_stat)}
-          end
-        else
-          user_pokemon_stat.win += 1
-          user_pokemon_stat.save
-        end
+        win_menu(user_pokemon, user_pokemon_stat)
         opp_party.delete(opp_choice)
 
       # if draw compare base_experience to delcare winner.
@@ -67,28 +51,15 @@ class User < ActiveRecord::Base
           sleep(0.75)
           puts "You Win!"
 
-          # checking for if pokemon is captured.
-          if user_pokemon_stat == nil || user_pokemon_stat.captured == false
-            prompt.select("Catch this Pokemon?") do |menu|
-              menu.choice "Yes", -> {yes_capture2(user_pokemon, user_pokemon_stat)}
-              menu.choice "No", -> {no_capture2(user_pokemon, user_pokemon_stat)}
-            end
-          else
-            user_pokemon_stat.win += 1
-            user_pokemon_stat.save
-          end
+          win_menu(user_pokemon, user_pokemon_stat)
           opp_party.delete(opp_choice)
         elsif user_pokemon.base_experience < opp_pokemon.base_experience
           puts "Your #{user_choice} is less experienced than your opponent's #{opp_choice}!"
           puts "#{user_choice} fainted."
           sleep(0.75)
           puts "You Lose!"
-          if user_pokemon_stat == nil
-            UserPkmn.create(win: 0, loss: 1, user_id: self.id, pkmn_id: user_pokemon.id)
-          else
-            user_pokemon_stat.loss += 1
-            user_pokemon_stat.save
-          end
+
+          loss_menu(user_pokemon, user_pokemon_stat)
           user_party.delete(user_choice)
         else
           puts "#{user_choice} and #{opp_choice} are eqaully experienced!"
@@ -103,6 +74,7 @@ class User < ActiveRecord::Base
       system "clear"
     end
   end
+end
 
   # capture methods.
   def yes_capture2(pokemon, pokemon_stat)
@@ -126,4 +98,25 @@ class User < ActiveRecord::Base
     end
   end
 
-end
+  def win_menu(user_pokemon, user_pokemon_stat)
+    prompt = TTY::Prompt.new(active_color: :cyan)
+    if user_pokemon_stat == nil || user_pokemon_stat.captured == false
+      prompt.select("Catch this Pokemon?") do |menu|
+        menu.choice "Yes", -> {yes_capture2(user_pokemon, user_pokemon_stat)}
+        menu.choice "No", -> {no_capture2(user_pokemon, user_pokemon_stat)}
+      end
+    else
+      user_pokemon_stat.win += 1
+      user_pokemon_stat.save
+    end
+  end
+
+  def loss_menu(user_pokemon, user_pokemon_stat)
+    prompt = TTY::Prompt.new(active_color: :cyan)
+    if user_pokemon_stat == nil
+      UserPkmn.create(win: 0, loss: 1, user_id: self.id, pkmn_id: user_pokemon.id)
+    else
+      user_pokemon_stat.loss += 1
+      user_pokemon_stat.save
+    end
+  end

@@ -7,7 +7,7 @@ def display_user_menu(user)
 
   until false
     prompt.select("\n#{user.name.upcase}\'s MENU \n") do |menu|
-      menu.choice "Battle!", -> {setup2}
+      menu.choice "Battle!", -> {setup2(user)}
       menu.choice "Battle Record", -> {battle_record(user)}
       menu.choice "My Pokemon", -> {my_pokemon(user)}
       menu.choice "Change Name", -> {change_name(user)}
