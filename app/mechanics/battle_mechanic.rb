@@ -1,10 +1,25 @@
+# def battle_mechanic(type, opponent)
+#   type_circle = {
+#     fire: "grass",
+#     grass: "water",
+#     water: "fire"
+#   }
+#   if type_circle[opponent.to_sym] == type
+#     return "lose"
+#   elsif type_circle[type.to_sym] == opponent
+#     return "win"
+#   else
+#     puts "Sudden death!"
+#     draw_game
+#   end
+# end
 def battle_mechanic(type, opponent)
   type_circle = {
     fire: "grass",
     grass: "water",
     water: "fire"
   }
-
+  (type_circle[opponent.to_sym]).find {|element| element == type}
   if type_circle[opponent.to_sym] == type
     return "lose"
   elsif type_circle[type.to_sym] == opponent
@@ -12,11 +27,6 @@ def battle_mechanic(type, opponent)
   else
     puts "Sudden death!"
     draw_game
-    # if rand(0..1) == 1
-    #   return "win"
-    # else
-    #   return "false"
-    # end
   end
 end
 
