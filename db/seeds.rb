@@ -10,12 +10,18 @@ def load_pokemon
   i = 0
 
   until i == 20 do
-    pokemon = fetch_api(rand(807))
+    dex_entry = rand(807)
+    pokemon = fetch_api(dex_entry)
     name = pokemon["name"]
     base_exp = pokemon["base_experience"]
     type_one = pokemon["types"].find { |type| type["slot"] == 1 }["type"]["name"]
-    
-    Pkmn.create(name: name, element: type_one, base_experience: base_exp)
+
+    Pkmn.create(
+      name: name,
+      element: type_one,
+      base_experience: base_exp,
+      pokedex: dex_entry
+    )
 #     # random = rand(type["pokemon"].count)
 #     # pkmn_name = type["pokemon"][random]["pokemon"]["name"]
 #     # Pkmn.create(name: pkmn_name, element: type["name"])

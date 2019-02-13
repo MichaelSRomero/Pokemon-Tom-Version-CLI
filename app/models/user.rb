@@ -1,4 +1,3 @@
-require "pry"
 class User < ActiveRecord::Base
   has_many :user_pkmns
   has_many :pkmns, through: :user_pkmns
@@ -43,7 +42,7 @@ class User < ActiveRecord::Base
         win_menu(user_pokemon, user_pokemon_stat)
         opp_party.delete(opp_choice)
 
-      # if draw compare base_experience to delcare winner.
+      # if draw compare base_experience to declare winner.
       else
         if user_pokemon.base_experience > opp_pokemon.base_experience
           puts "Your #{user_choice} is more experienced than your opponent's #{opp_choice}!"
