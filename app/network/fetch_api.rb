@@ -12,6 +12,7 @@ require 'json'
 # Grass type count = 110
 
 def fetch_api(type_name)
-  raw_response = RestClient.get("https://pokeapi.co/api/v2/type/#{type_name}/")
+  # raw_response = RestClient.get("https://pokeapi.co/api/v2/type/#{type_name}/")
+  raw_response = RestClient.get("https://pokeapi.co/api/v2/pokemon/#{type_name}")
   json_response = JSON.parse(raw_response)
 end
