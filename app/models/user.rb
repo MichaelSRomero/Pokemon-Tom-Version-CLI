@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
     until user_party == [] || opp_party == []
       # variables.
       trainer = switch
+      load_scoreboard(opp_party)
       user_choice = prompt.select("Select a Pokemon to battle!", user_party)
       user_pokemon = (Pkmn.find_by name: user_choice.downcase)
       user_pokemon_stat = UserPkmn.find_by pkmn_id: user_pokemon.id, user_id: self.id
