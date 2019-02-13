@@ -87,15 +87,17 @@ class User < ActiveRecord::Base
           opp_party.delete(opp_choice)
         end
       end
-      if switch == true
-        if opp_party == []
-          puts "Congratulations, you won the Pokemon battle!"
-        else
-          puts "Shame, you lost the Pokemon Battle..."
-        end
-      end
       sleep(2)
       system "clear"
+    end
+    if switch == true
+      if opp_party == []
+        puts "Congratulations, you won the Pokemon battle!"
+        sleep(1)
+      else
+        puts "Shame, you lost the Pokemon Battle..."
+        sleep(1)
+      end
     end
   end
 end

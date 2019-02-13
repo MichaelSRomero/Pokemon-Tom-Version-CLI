@@ -1,4 +1,4 @@
-
+require "pry"
 def log_in_menu
   sleep(1.5)
   prompt = TTY::Prompt.new(active_color: :cyan)
@@ -15,10 +15,13 @@ end
 def load_user
   sleep(0.75)
   prompt = TTY::Prompt.new(active_color: :cyan)
-  user_name = prompt.ask("Enter existing user-name: ")
+
+  users = User.all.map { |user| user.name }
+
+  user_name = prompt.select("Select your name!", users)
 
   user = User.find_by(name: user_name)
-
+  
   if user != nil
     prompt.say("Welcome back #{user.name}!")
     display_user_menu(user)
