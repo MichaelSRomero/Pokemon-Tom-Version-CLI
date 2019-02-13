@@ -18,9 +18,11 @@ end
 
 def change_name(user)
   prompt = TTY::Prompt.new(active_color: :cyan)
+
   new_name = prompt.ask("Enter your new name:") do |q|
     q.required true
   end
+  
   user.name = new_name
   user.save
 end
@@ -32,6 +34,7 @@ def my_pokemon(user)
 end
 
 def battle_record(user)
+  system "clear"
   user_stat = UserPkmn.all.where user_id: user.id
   puts (user_stat.map{ |row| "#{row.pkmn.name.capitalize} has, Win: #{row.win}, Loss: #{row.loss}" }).sort
 end

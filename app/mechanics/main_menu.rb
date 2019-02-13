@@ -32,7 +32,8 @@ def new_user
   prompt = TTY::Prompt.new(active_color: :cyan)
 
   user_name = prompt.ask("Please insert a user-name...")
-  User.create(name: user_name)
+  user = User.create(name: user_name)
+  display_user_menu(user)
 end
 
 def exit_program

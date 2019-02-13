@@ -3,7 +3,7 @@ def load_battle_animation
   i = 0
 
   while i <= 20
-    print "\033[2J"
+    system "clear"
 
     File.foreach("animation/0#{i}-battle.rb") { |f| puts f }
     sleep(0.15)
