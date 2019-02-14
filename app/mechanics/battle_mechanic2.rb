@@ -32,6 +32,19 @@ def battle_mech(user_type, opp_type)
   end
 end
 
+# trainer battle methods.
+def win_trainer(user_pokemon, user_pokemon_stat)
+  user_pokemon_stat.win += 1
+  user_pokemon_stat.exp += 1
+  user_pokemon_stat.save
+  puts "#{user_pokemon.name.upcase} gained 1 EXP. Points!"
+  sleep(0.75)
+end
+
+def loss_trainer(user_pokemon, user_pokemon_stat)
+  user_pokemon_stat.loss += 1
+  user_pokemon_stat.save
+end
 
 # capture methods.
 def yes_capture2(pokemon, pokemon_stat)
@@ -53,20 +66,6 @@ def no_capture2(pokemon, pokemon_stat)
     pokemon_stat.win += 1
     pokemon_stat.save
   end
-end
-
-# trainer battle methods.
-def win_trainer(user_pokemon, user_pokemon_stat)
-  user_pokemon_stat.win += 1
-  user_pokemon_stat.exp += 1
-  user_pokemon_stat.save
-  puts "#{user_pokemon.name.upcase} gained 1 EXP. Points!"
-  sleep(0.75)
-end
-
-def loss_trainer(user_pokemon, user_pokemon_stat)
-  user_pokemon_stat.loss += 1
-  user_pokemon_stat.save
 end
 
 # battle methods.
