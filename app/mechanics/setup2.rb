@@ -12,10 +12,12 @@ def setup2(user)
 
   prompt.say("Whoa! A horde of wild Pokemon appeared!")
   sleep(1)
+
   until false
     user_party = prompt.multi_select("Select 6 Pokemon for your party!", random, per_page: 12)
     break if user_party.length == 6
   end
+
   opp_party = random - user_party
   user.battle2(user_party, opp_party, false)
 end
