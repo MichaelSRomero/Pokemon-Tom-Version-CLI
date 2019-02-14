@@ -1,6 +1,6 @@
 require "pry"
-def battle_mech(user_type, opp_type)
-  type_rules = {
+def type_rules
+  {
     bug: ["grass", "dark", "psychic"],
     dark: ["ghost", "psychic"],
     dragon: ["fire", "water", "grass", "electric"],
@@ -20,6 +20,9 @@ def battle_mech(user_type, opp_type)
     steel: ["fairy", "ice", "rock"],
     water: ["fire", "ground", "rock"],
   }
+end
+
+def battle_mech(user_type, opp_type)
   if type_rules[opp_type.to_sym].include?(user_type)
     return "loss"
   elsif type_rules[user_type.to_sym].include?(opp_type)

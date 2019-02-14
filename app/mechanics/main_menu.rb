@@ -1,5 +1,7 @@
 require "pry"
 def log_in_menu
+  system "clear"
+  load_logo_ascii
   sleep(1.5)
   prompt = TTY::Prompt.new(active_color: :cyan)
 
@@ -7,6 +9,7 @@ def log_in_menu
     prompt.select("Are you an existing or new player?") do |menu|
       menu.choice "New User", -> {new_user}
       menu.choice "Existing User", -> {load_user}
+      menu.choice "How to Play", -> {how_to_play_menu}
       menu.choice "Exit", -> {exit_program}
     end
   end

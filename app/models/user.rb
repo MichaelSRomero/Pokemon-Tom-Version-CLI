@@ -54,12 +54,11 @@ class User < ActiveRecord::Base
 
       # if draw compare base_experience to declare winner.
       else
-        binding.pry
         user_exp = 0
         if user_pokemon_stat != nil
           user_exp = user_pokemon_stat.exp
         end
-        binding.pry
+        
         user_pokemon_total_exp = user_pokemon.base_experience + user_exp
 
         if user_pokemon_total_exp > opp_pokemon.base_experience
