@@ -18,9 +18,10 @@ def load_scoreboard(opponent)
    ╚██╗    ███████╗███████╗██║        ██║       ██╔╝
     ╚═╝    ╚══════╝╚══════╝╚═╝        ╚═╝       ╚═╝
 
-        (@)#{opponent[0]}   (@)#{opponent[1]}
-        (@)#{opponent[2]}   (@)#{opponent[3]}
-        (@)#{opponent[4]}   (@)#{opponent[5]}
+          ⊝ #{opponent[0]}      ⊝ #{opponent[1]}
+          ⊝ #{opponent[2]}      ⊝ #{opponent[3]}
+          ⊝ #{opponent[4]}      ⊝ #{opponent[5]}
+          
   █████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗
   ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
   "

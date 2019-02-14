@@ -18,6 +18,8 @@ def setup2(user)
 end
 
 def trainer_setup(user)
+  stop_music
+  load_trainer_battle_music
   prompt = TTY::Prompt.new(active_color: :cyan)
 
   user_pokemons = (UserPkmn.all.where user_id: user.id, captured: true).map { |pokemon| pokemon.pkmn.name.capitalize }
