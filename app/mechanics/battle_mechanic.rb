@@ -1,149 +1,88 @@
-# def battle_mechanic(type, opponent)
-#   type_circle = {
-#     fire: "grass",
-#     grass: "water",
-#     water: "fire"
-#   }
-#   if type_circle[opponent.to_sym] == type
-#     return "lose"
-#   elsif type_circle[type.to_sym] == opponent
-#     return "win"
-#   else
-#     puts "Sudden death!"
-#     draw_game
-#   end
-# end
+require "pry"
+def battle_mech(user_type, opp_type)
+  type_rules = {
+    bug: ["grass", "dark", "psychic"],
+    dark: ["ghost", "psychic"],
+    dragon: ["fire", "water", "grass", "electric"],
+    electric: ["flying", "water"],
+    fairy: ["dark", "dragon", "fighting"],
+    fighting: ["dark", "ice", "normal", "rock", "steel"],
+    fire: ["bug", "grass", "ice", "steel"],
+    flying: ["bug", "fighting", "grass"],
+    ghost: ["fighting" , "psychic"],
+    grass: ["ground", "rock", "water"],
+    ground: ["electric", "fire", "poison", "rock", "steel"],
+    ice: ["dragon", "flying", "grass", "ground"],
+    normal: ["ghost"],
+    poison: ["fairy", "grass"],
+    psychic: ["fighting", "poison"],
+    rock: ["bug", "fire", "flying", "ice"],
+    steel: ["fairy", "ice", "rock"],
+    water: ["fire", "ground", "rock"],
+  }
+  if type_rules[opp_type.to_sym].include?(user_type)
+    return "loss"
+  elsif type_rules[user_type.to_sym].include?(opp_type)
+    return "win"
+  else
+    return "draw"
+  end
+end
 
-# def battle_mechanic(type, opponent)
-#   type_circle = {
-#     fire: "grass",
-#     grass: "water",
-#     water: "fire"
-#   }
-#   (type_circle[opponent.to_sym]).find {|element| element == type}
-#   if type_circle[opponent.to_sym] == type
-#     return "lose"
-#   elsif type_circle[type.to_sym] == opponent
-#     return "win"
-#   else
-#     puts "Sudden death!"
-#     draw_game
-#   end
-# end
-#
-# def win
-#   puts "You won, now pick the same hand as your opponent to win!"
-#   prompt = TTY::Prompt.new(active_color: :cyan)
-#   rule = {
-#     Rock: "Scissor",
-#     Scissor: "Paper",
-#     Paper: "Rock"
-#   }
-#   hand =  prompt.select("Rock, Paper, or Scissor?") do |menu|
-#     menu.choice "Rock"
-#     menu.choice "Paper"
-#     menu.choice "Scissor"
-#   end
-#   opponent = [:Rock, :Paper, :Scissor].sample
-#   puts "Your opponent throws out a #{opponent.to_s}!"
-#   if hand == opponent.to_s
-#     return "win"
-#   elsif rule[opponent] == hand
-#     loss
-#   else
-#     win
-#   end
-# end
-#
-# def loss
-#   puts "You lost, if your opponent picks the same hand as you, you lose!"
-#   prompt = TTY::Prompt.new(active_color: :cyan)
-#   rule = {
-#     Rock: "Scissor",
-#     Scissor: "Paper",
-#     Paper: "Rock",
-#   }
-#   hand =  prompt.select("Rock, Paper, or Scissor?") do |menu|
-#     menu.choice "Rock"
-#     menu.choice "Paper"
-#     menu.choice "Scissor"
-#   end
-#   opponent = [:Rock, :Paper, :Scissor].sample
-#   puts "Your opponent throws out a #{opponent.to_s}!"
-#   if hand == opponent.to_s
-#     return "lose"
-#   elsif rule[hand.to_sym] == opponent.to_s
-#     win
-#   else
-#     puts "Tie, one more round!"
-#     loss
-#   end
-# end
-#
-# def draw_game
-#   prompt = TTY::Prompt.new(active_color: :cyan)
-#   rule = {
-#     Rock: "Scissor",
-#     Scissor: "Paper",
-#     Paper: "Rock"
-#   }
-#   hand =  prompt.select("Rock, Paper, or Scissor?") do |menu|
-#     menu.choice "Rock"
-#     menu.choice "Paper"
-#     menu.choice "Scissor"
-#     menu.choice "Surrender"
-#   end
-#   opponent = [:Rock, :Paper, :Scissor].sample
-#   puts "Your opponent throws out a #{opponent.to_s}!"
-#   if hand == "Surrender"
-#     return "lose"
-#   elsif rule[opponent] == hand
-#     loss
-#   elsif rule[hand.to_sym] == opponent.to_s
-#     win
-#   else
-#     draw_game
-#   end
-# end
 
-#   case type
-#   when "fire"
-#     if opponent == "water"
-#       return "lose"
-#     elsif opponent == "grass"
-#       return "win"
-#     else
-#       puts "Sudden death!"
-#       if rand(0..1) == 1
-#         return "win"
-#       else
-#         return "lose"
-#       end
-#     end
-#   when "water"
-#     if opponent == "grass"
-#       return "lose"
-#     elsif opponent == "fire"
-#       return "win"
-#     else
-#       puts "Sudden death!"
-#       if rand(0..1) == 1
-#         return "win"
-#       else
-#         return "lose"
-#       end
-#     end
-#   when "grass"
-#     if opponent == "fire"
-#       return "lose"
-#     elsif opponent == "water"
-#       return "win"
-#     else
-#       puts "Sudden death!"
-#       if rand(0..1) == 1
-#         return "win"
-#       else
-#         return "lose"
-#       end
-#     end
-#   end
+# capture methods.
+def yes_capture2(pokemon, pokemon_stat)
+  prompt = TTY::Prompt.new(active_color: :cyan)
+  nickname = prompt.ask("Nickname your Pokemon:", default: pokemon.name.capitalize)
+  if pokemon_stat == nil
+    UserPkmn.create(nickname: nickname, win: 1, loss: 0, captured: true, user_id: self.id, pkmn_id: pokemon.id)
+  else
+    UserPkmn.update(pokemon_stat.id, nickname: nickname, captured: true)
+    pokemon_stat.win += 1
+    pokemon_stat.save
+  end
+end
+
+def no_capture2(pokemon, pokemon_stat)
+  if pokemon_stat == nil
+    UserPkmn.create(win: 1, loss: 0, user_id: self.id, pkmn_id: pokemon.id)
+  else
+    pokemon_stat.win += 1
+    pokemon_stat.save
+  end
+end
+
+# trainer battle methods.
+def win_trainer(user_pokemon, user_pokemon_stat)
+  user_pokemon_stat.win += 1
+  user_pokemon_stat.save
+end
+
+def loss_trainer(user_pokemon, user_pokemon_stat)
+  user_pokemon_stat.loss += 1
+  user_pokemon_stat.save
+end
+
+# battle methods.
+def win_menu(user_pokemon, user_pokemon_stat)
+  prompt = TTY::Prompt.new(active_color: :cyan)
+  if user_pokemon_stat == nil || user_pokemon_stat.captured == false
+    prompt.select("Catch this Pokemon?") do |menu|
+      menu.choice "Yes", -> {yes_capture2(user_pokemon, user_pokemon_stat)}
+      menu.choice "No", -> {no_capture2(user_pokemon, user_pokemon_stat)}
+    end
+  else
+    user_pokemon_stat.win += 1
+    user_pokemon_stat.save
+  end
+end
+
+def loss_menu(user_pokemon, user_pokemon_stat)
+  prompt = TTY::Prompt.new(active_color: :cyan)
+  if user_pokemon_stat == nil
+    UserPkmn.create(win: 0, loss: 1, user_id: self.id, pkmn_id: user_pokemon.id)
+  else
+    user_pokemon_stat.loss += 1
+    user_pokemon_stat.save
+  end
+end

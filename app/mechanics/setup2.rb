@@ -22,14 +22,19 @@ def trainer_setup(user)
   load_trainer_battle_music
   prompt = TTY::Prompt.new(active_color: :cyan)
 
-  user_pokemons = (UserPkmn.all.where user_id: user.id, captured: true).map { |pokemon| pokemon.pkmn.name.capitalize }
+  user_pokemons = (UserPkmn.all.where user_id: user.id, captured: true, :fatigue < 2)
+  user_pokemon_list = user_pokemons.map { |pokemon| pokemon.pkmn.name.capitalize }
 
   opp = find_opp(user)
 
-  opp_pokemons = (UserPkmn.all.where user_id: opp.id, captured: true).map { |pokemon| pokemon.pkmn.name.capitalize }
-  opp_party = opp_pokemons.sample(6)
+  opp_pokemons = (UserPkmn.all.where user_id: opp.id, captured: true, :fatigue < 2)
+  opp_pokemon_list = opp_pokemons.map { |pokemon| pokemon.pkmn.name.capitalize }
+  opp_party = opp_pokemon_list.sample(6)
 
-  user_party = prompt.multi_select("Select up to 6 of your captured Pokemons!", user_pokemons, per_page: 12)
+  user_party = prompt.multi_select("Select up to 6 of your captured non-fatigued Pokemons!", user_pokemon_list, per_page: 12)
+
+  hash = {}
+  hash[:name] = user_party.map(&:downcase)
 
   puts "#{opp.name} challenges you to a Pokemon battle!"
   sleep(1)
