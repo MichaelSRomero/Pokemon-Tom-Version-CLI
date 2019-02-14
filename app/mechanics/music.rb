@@ -22,3 +22,7 @@ end
 def load_user_victory_music
   play_music("sound/pkmn - victory (vs wild pokemon).mp3")
 end
+
+def load_trainer_battle_music
+  play_music("sound/pkmn-last battle(vs rival).mp3")
+end
