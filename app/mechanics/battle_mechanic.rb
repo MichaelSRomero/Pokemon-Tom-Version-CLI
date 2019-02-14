@@ -55,7 +55,10 @@ end
 # trainer battle methods.
 def win_trainer(user_pokemon, user_pokemon_stat)
   user_pokemon_stat.win += 1
+  user_pokemon_stat.exp += 1
   user_pokemon_stat.save
+  puts "#{user_pokemon.name.upcase} gained 1 EXP. Points!"
+  sleep(0.75)
 end
 
 def loss_trainer(user_pokemon, user_pokemon_stat)
@@ -72,8 +75,7 @@ def win_menu(user_pokemon, user_pokemon_stat)
       menu.choice "No", -> {no_capture2(user_pokemon, user_pokemon_stat)}
     end
   else
-    user_pokemon_stat.win += 1
-    user_pokemon_stat.save
+    win_trainer(user_pokemon, user_pokemon_stat)
   end
 end
 
