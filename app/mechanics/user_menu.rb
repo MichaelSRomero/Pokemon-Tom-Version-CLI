@@ -71,7 +71,7 @@ def my_pokemon(user)
   user_pokemon = UserPkmn.all.where user_id: user.id, captured: true
   puts "  POKEDEX| POKEMON (NICKNAME)"
   puts " ------------------------------"
-  puts user_pokemon.map { |row| "  ##{row.pkmn.pokedex}     #{row.pkmn.name.capitalize} (#{row.nickname})" }
+  puts user_pokemon.map { |row| "  ##{row.pkmn.pokedex.to_s.ljust(3)}     #{row.pkmn.name.capitalize.ljust(11)} (#{row.nickname})" }
   prompt.select("") { |menu| menu.choice "Go back", -> {display_user_menu(user)} }
 end
 
