@@ -14,7 +14,6 @@ def setup2(user)
   sleep(1)
   until false
     user_party = prompt.multi_select("Select 6 Pokemon for your party!", random, per_page: 12)
-    binding.pry
     break if user_party.length == 6
   end
   opp_party = random - user_party
@@ -26,26 +25,15 @@ def trainer_setup(user)
   load_trainer_battle_music
   prompt = TTY::Prompt.new(active_color: :cyan)
 
-<<<<<<< HEAD
   if User.all.length == 1 || user.user_pkmns.count == 0
-=======
-  user_pokemons = (UserPkmn.all.where user_id: user.id, captured: true).where("fatigue < 2")
-  user_pokemon_list = user_pokemons.map { |pokemon| pokemon.pkmn.name.capitalize }
-
-  if User.all.length == 1
->>>>>>> james
     puts "Currently there are no other trainers, bringing you back to the main menu!"
     sleep(1.5)
     display_user_menu(user)
   else
     user_pokemons = (UserPkmn.all.where user_id: user.id, captured: true).where("fatigue < ?", 2)
     opp = find_opp(user)
-<<<<<<< HEAD
-
-=======
->>>>>>> james
     opp_pokemons = (UserPkmn.all.where user_id: opp.id, captured: true).where("fatigue < ?", 2)
-    binding.pry
+
     if user_pokemons == []
       puts "All of your Pokemons are too tired to battle!"
       puts "Please check back soon!"
@@ -62,14 +50,10 @@ def trainer_setup(user)
       opp_pokemon_list = opp_pokemons.map { |pokemon| pokemon.pkmn.name.capitalize }
       opp_party = opp_pokemon_list.sample(6)
 
-<<<<<<< HEAD
-    user_party = prompt.multi_select("Select up to 6 of your captured non-fatigued Pokemons!", user_pokemon_list, per_page: 12)
-=======
       until false
         user_party = prompt.multi_select("Select up to 6 of your captured non-fatigued Pokemons!", user_pokemon_list, per_page: 12)
         break if user_party.length < 6
       end
->>>>>>> james
 
       # user fatigue mechanic.
       user_hash1 = {}

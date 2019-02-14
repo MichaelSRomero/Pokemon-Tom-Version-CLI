@@ -1,10 +1,12 @@
 def display_user_menu(user)
-  system "clear"
+  # system "clear"
   # stop_music
   # load_user_menu_music
   prompt = TTY::Prompt.new(active_color: :cyan)
 
   until false
+    system "clear"
+    load_menu_ascii
     stop_music
     load_user_menu_music
     prompt.select("\n#{user.name.upcase}\'s MENU \n", per_page: 8) do |menu|
