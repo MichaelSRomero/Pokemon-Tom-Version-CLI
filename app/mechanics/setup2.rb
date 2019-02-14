@@ -22,12 +22,12 @@ def trainer_setup(user)
   load_trainer_battle_music
   prompt = TTY::Prompt.new(active_color: :cyan)
 
-  user_pokemons = (UserPkmn.all.where user_id: user.id, captured: true, :fatigue < 2)
+  user_pokemons = (UserPkmn.all.where user_id: user.id, captured: true).where(fatigue < 2)
   user_pokemon_list = user_pokemons.map { |pokemon| pokemon.pkmn.name.capitalize }
 
   opp = find_opp(user)
 
-  opp_pokemons = (UserPkmn.all.where user_id: opp.id, captured: true, :fatigue < 2)
+  opp_pokemons = (UserPkmn.all.where user_id: opp.id, captured: true).where(fatigue < 2)
   opp_pokemon_list = opp_pokemons.map { |pokemon| pokemon.pkmn.name.capitalize }
   opp_party = opp_pokemon_list.sample(6)
 
