@@ -7,7 +7,7 @@ def display_user_menu(user)
   until false
     stop_music
     load_user_menu_music
-    prompt.select("\n#{user.name.upcase}\'s MENU \n") do |menu|
+    prompt.select("\n#{user.name.upcase}\'s MENU \n", per_page: 8) do |menu|
       menu.choice "Battle!", -> {setup2(user)}
       menu.choice "Trainer Battle!", -> {trainer_setup(user)}
       menu.choice "Battle Record", -> {battle_record(user)}

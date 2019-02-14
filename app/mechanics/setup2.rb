@@ -12,7 +12,11 @@ def setup2(user)
 
   prompt.say("Whoa! A horde of wild Pokemon appeared!")
   sleep(1)
-  user_party = prompt.multi_select("Select 6 Pokemon for your party!", random, per_page: 12)
+  until false
+    user_party = prompt.multi_select("Select 6 Pokemon for your party!", random, per_page: 12)
+    binding.pry
+    break if user_party.length == 6
+  end
   opp_party = random - user_party
   user.battle2(user_party, opp_party, false)
 end
@@ -50,7 +54,10 @@ def trainer_setup(user)
       opp_pokemon_list = opp_pokemons.map { |pokemon| pokemon.pkmn.name.capitalize }
       opp_party = opp_pokemon_list.sample(6)
 
-      user_party = prompt.multi_select("Select up to 6 of your captured non-fatigued Pokemons!", user_pokemon_list, per_page: 12)
+      until false
+        user_party = prompt.multi_select("Select up to 6 of your captured non-fatigued Pokemons!", user_pokemon_list, per_page: 12)
+        break if user_party.length < 6
+      end
 
       # user fatigue mechanic.
       user_hash1 = {}
