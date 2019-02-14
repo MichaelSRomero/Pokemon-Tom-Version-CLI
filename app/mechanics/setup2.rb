@@ -22,23 +22,64 @@ def trainer_setup(user)
   load_trainer_battle_music
   prompt = TTY::Prompt.new(active_color: :cyan)
 
-  user_pokemons = (UserPkmn.all.where user_id: user.id, captured: true).where(fatigue < 2)
-  user_pokemon_list = user_pokemons.map { |pokemon| pokemon.pkmn.name.capitalize }
+  if User.all.length == 1
+    puts "Currently there are no other trainers, bringing you back to the main menu!"
+    sleep(1.5)
+    display_user_menu(user)
+  else
+    user_pokemons = (UserPkmn.all.where user_id: user.id, captured: true).where("fatigue < ?", 2)
+    user_pokemon_list = user_pokemons.map { |pokemon| pokemon.pkmn.name.capitalize }
+    opp = find_opp(user)
 
-  opp = find_opp(user)
+    opp_pokemons = (UserPkmn.all.where user_id: opp.id, captured: true).where("fatigue < ?", 2)
+    opp_pokemon_list = opp_pokemons.map { |pokemon| pokemon.pkmn.name.capitalize }
+    opp_party = opp_pokemon_list.sample(6)
 
-  opp_pokemons = (UserPkmn.all.where user_id: opp.id, captured: true).where(fatigue < 2)
-  opp_pokemon_list = opp_pokemons.map { |pokemon| pokemon.pkmn.name.capitalize }
-  opp_party = opp_pokemon_list.sample(6)
+    user_party = prompt.multi_select("Select up to 6 of your captured non-fatigued Pokemons!", user_pokemon_list, per_page: 12)
 
-  user_party = prompt.multi_select("Select up to 6 of your captured non-fatigued Pokemons!", user_pokemon_list, per_page: 12)
+    # user fatigue mechanic.
+    user_hash1 = {}
+    user_hash1[:name] = user_party.map(&:downcase)
+    user_arr = (Pkmn.all.where(user_hash1)).map{|pokemon| pokemon.id}
+    user_hash2 = {}
+    user_hash2[:pkmn_id] = user_arr
 
-  hash = {}
-  hash[:name] = user_party.map(&:downcase)
+    user_c = user_pokemons.where(user_hash2)
+    user_nc = user_pokemons.where.not(user_hash2)
 
-  puts "#{opp.name} challenges you to a Pokemon battle!"
-  sleep(1)
-  user.battle2(user_party, opp_party, true)
+    # opponent fatigure mechanic.
+    opp_hash1 = {}
+    opp_hash1[:name] = opp_party.map(&:downcase)
+    opp_arr = (Pkmn.all.where(opp_hash1)).map{|pokemon| pokemon.id}
+    opp_hash2 = {}
+    opp_hash2[:pkmn_id] = opp_arr
+
+    opp_c = opp_pokemons.where(opp_hash2)
+    opp_nc = opp_pokemons.where.not(opp_hash2)
+
+    add_fatigue(user_c)
+    add_fatigue(opp_c)
+    min_fatigue(user_nc)
+    min_fatigue(opp_nc)
+
+    puts "#{opp.name} challenges you to a Pokemon battle!"
+    sleep(1)
+    user.battle2(user_party, opp_party, true)
+  end
+end
+
+def add_fatigue(arr)
+  arr.each do |row|
+    row.fatigue += 1
+    row.save
+  end
+end
+
+def min_fatigue(not_chosen)
+  not_chosen.each do |row|
+    row.fatigue -= 1
+    row.save
+  end
 end
 
 def find_opp(user)
