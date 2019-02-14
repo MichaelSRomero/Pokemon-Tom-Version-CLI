@@ -54,11 +54,15 @@ class User < ActiveRecord::Base
 
       # if draw compare base_experience to declare winner.
       else
-        if user_pokemon.base_experience > opp_pokemon.base_experience
+        user_pokemon_total_exp = user_pokemon.base_experience + user_pokemon_stat.exp
+
+        if user_pokemon_total_exp > opp_pokemon.base_experience
           puts "Your #{user_choice} is more experienced than your opponent's #{opp_choice}!"
+          sleep(0.75)
           puts "Opponent's #{opp_choice} fainted."
           sleep(0.75)
           puts "You Win!"
+          sleep(0.75)
 
           if trainer == true
             win_trainer(user_pokemon, user_pokemon_stat)
@@ -66,7 +70,7 @@ class User < ActiveRecord::Base
             win_menu(user_pokemon, user_pokemon_stat)
           end
           opp_party.delete(opp_choice)
-        elsif user_pokemon.base_experience < opp_pokemon.base_experience
+        elsif user_pokemon_total_exp < opp_pokemon.base_experience
           puts "Your #{user_choice} is less experienced than your opponent's #{opp_choice}!"
           puts "#{user_choice} fainted."
           sleep(0.75)
@@ -100,4 +104,5 @@ class User < ActiveRecord::Base
       end
     end
   end
+
 end
