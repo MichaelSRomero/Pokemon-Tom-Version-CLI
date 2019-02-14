@@ -12,6 +12,7 @@ def display_user_menu(user)
       menu.choice "Trainer Battle!", -> {trainer_setup(user)}
       menu.choice "Battle Record", -> {battle_record(user)}
       menu.choice "My Pokemon", -> {my_pokemon(user)}
+      menu.choice "Nickname My Pokemon", -> {nickname_pkmn(user)}
       menu.choice "Change Name", -> {change_name(user)}
       menu.choice "Delete Data", -> {delete_data(user)}
       menu.choice "Exit", -> {exit_menu(user)}
@@ -46,6 +47,23 @@ def change_name(user)
 
   user.name = new_name
   user.save
+end
+
+def nickname_pkmn(user)
+  prompt = TTY::Prompt.new(active_color: :cyan)
+
+  user_pokemons = (UserPkmn.all.where user_id: user.id, captured: true)
+  user_choices = user_pokemons.map { |list| list.pkmn.name.capitalize  }
+  user_choices << "Exit"
+  choice = prompt.select("Pick one of your Pokemon you would like to nickname!", user_choices)
+
+  display_user_menu(user) if choice == "Exit"
+
+  nn_change_pkmn = user_pokemons.find_by pkmn_id: (Pkmn.all.find_by name: choice.downcase)
+  puts "\n"
+  new_nn = prompt.ask("Your #{choice} is currently nicknamed \"#{nn_change_pkmn.nickname}\". Enter a new nickname:", default: nn_change_pkmn.nickname)
+
+  UserPkmn.all.update(nn_change_pkmn.id, nickname: new_nn)
 end
 
 def my_pokemon(user)
