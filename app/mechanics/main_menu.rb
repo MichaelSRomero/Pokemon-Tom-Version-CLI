@@ -25,6 +25,14 @@ def new_user
   sleep(0.75)
 
   user_name = prompt.ask("Please insert a user-name...")
+  if user_name == "Back"
+    puts "Back, isn't a usable name!"
+    sleep(1)
+    puts "Please enter a valid user name"
+    puts "\n"
+    sleep(1.5)
+    new_user
+  end
   user = User.create(name: user_name)
   display_user_menu(user)
 end
@@ -40,7 +48,10 @@ def load_user
   end
 
   users = User.all.map { |user| user.name }
+  users << "Back"
+
   user_name = prompt.select("Select your name!", users)
+  log_in_menu if user_name == "Back"
   user = User.find_by(name: user_name)
 
   if user != nil

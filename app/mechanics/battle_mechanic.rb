@@ -19,7 +19,7 @@ def type_rules
     normal: ["ghost"],
     poison: ["fairy", "grass"],
     psychic: ["fighting", "poison"],
-    rock: ["bug", "fire", "flying", "ice"],
+    rock: ["bug", "fire", "flying", "ice", "electric"],
     steel: ["fairy", "ice", "rock"],
     water: ["fire", "ground", "rock"],
   }
