@@ -1,59 +1,44 @@
-# Module One Final Project Guidelines
+# Pokemon (Tom Version)
+![TOM COHORT](.images/dumbo-cohort.jpg)
+## Project Aim
+1. Incorporate all aspect of CRUD into our project.
+2. Access and manipulate API's to gain access to information necessary to the program
+3. Enrich the user experience with music, animation and easy-to-use interface.
+4. Attempt to implement core mechanics of the Pokemon games.
+5. Do 1 ~ 4 while still enjoying ourselves.
 
-Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
-
-For your final project, we'll be building a Command Line database application.
-
-## Project Requirements
-
-### Option One - Data Analytics Project
-
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have at minimum three models including one join model. This means you must have a many-to-many relationship.
-3. You should seed your database using data that you collect either from a CSV, a website by scraping, or an API.
-4. Your models should have methods that answer interesting questions about the data. For example, if you've collected info about movie reviews, what is the most popular movie? What movie has the most reviews?
-5. You should provide a CLI to display the return values of your interesting methods.  
-6. Use good OO design patterns. You should have separate classes for your models and CLI interface.
-
-  **Resource:** [Easy Access APIs](https://github.com/learn-co-curriculum/easy-access-apis)
-
-### Option Two - Command Line CRUD App
-
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have a minimum of three models.
-3. You should build out a CLI to give your user full CRUD ability for at least one of your resources. For example, build out a command line To-Do list. A user should be able to create a new to-do, see all todos, update a todo item, and delete a todo. Todos can be grouped into categories, so that a to-do has many categories and categories have many to-dos.
-4. Use good OO design patterns. You should have separate models for your runner and CLI interface.
-
-### Brainstorming and Proposing a Project Idea
-
-Projects need to be approved prior to launching into them, so take some time to brainstorm project options that will fulfill the requirements above.  You must have a minimum of four [user stories](https://en.wikipedia.org/wiki/User_story) to help explain how a user will interact with your app.  A user story should follow the general structure of `"As a <role>, I want <goal/desire> so that <benefit>"`. In example, if we were creating an app to randomly choose nearby restaurants on Yelp, we might write:
-
-* As a user, I want to be able to enter my name to retrieve my records
-* As a user, I want to enter a location and be given a random nearby restaurant suggestion
-* As a user, I should be able to reject a suggestion and not see that restaurant suggestion again
-* As a user, I want to be able to save to and retrieve a list of favorite restaurant suggestions
-
-## Instructions
-
-1. Fork and clone this repository.
-2. Build your application. Make sure to commit early and commit often. Commit messages should be meaningful (clearly describe what you're doing in the commit) and accurate (there should be nothing in the commit that doesn't match the description in the commit message). Good rule of thumb is to commit every 3-7 mins of actual coding time. Most of your commits should have under 15 lines of code and a 2 line commit is perfectly acceptable.
-3. Make sure to create a good README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
-4. Make sure your project checks off each of the above requirements.
-5. Prepare a video demo (narration helps!) describing how a user would interact with your working project.
-    * The video should:
-      - Have an overview of your project.(2 minutes max)
-6. Prepare a presentation to follow your video.(3 minutes max)
-    * Your presentation should:
-      - Describe something you struggled to build, and show us how you ultimately implemented it in your code.
-      - Discuss 3 things you learned in the process of working on this project.
-      - Address, if anything, what you would change or add to what you have today?
-      - Present any code you would like to highlight.   
-7. *OPTIONAL, BUT RECOMMENDED*: Write a blog post about the project and process.
-
----
-### Common Questions:
-- How do I turn off my SQL logger?
+## Requirements To Run
+1. Require gems
 ```ruby
-# in config/environment.rb add this line:
-ActiveRecord::Base.logger = nil
+$ bundle install
+$ rake db:migrate
+$ rake db:seed
+$ ruby bin/run.rb
 ```
+
+## Game Mechanics
+This game's mechanics is loosly based on the Pokemon game series where each individual of the 15 Pokemon types have strength and weakness to the other 14. Not to delve too deep into the original series mechanics; this game will be based corely on the Pokemon's type. The Player/User will be able to:
+1. Battle, and through those battle gain the opportunity to catch the Pokemon they are currently using, through winning the battle.
+2. Pick out from their list of captured Pokemon (maximum party of 6), which they will use to battle Trainers/Players at random that are fetched from the User database.
+3. Personalize and customize their player experience by giving their captured Pokemon a "nickname". As well as have the option to change their own name after creation.
+4. View a list of their captured and non-captured Pokemon and the stat associated with each individual Pokemon.
+5. Through playing learn the experience and fatigue system incorporated with normal and trainer battles.
+ * Further information regarding the game's mechanic and type, select "How to Play" in the Main Menu.
+
+## Load Pokemon Gens 2 - 7
+  ```ruby
+  $ atom db/seeds.rb
+    # Inside #load_pokemon set dex_entry to National Dex num
+    # loop until end of Generation Num
+  ```
+
+## Contributors
+- [James Kang](https://github.com/kangyongn)
+- [Michael Romero](https://github.com/MichaelSRomero)
+
+
+
+  **Resource:** [Ascii Art](http://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20), [Tty-Prompt](https://github.com/piotrmurach/tty-prompt), [PokeAPI](https://pokeapi.co/), [Soundtrack](https://downloads.khinsider.com/game-soundtracks/album/pokemon-original-game-soundtrack), [DIY-Terminal Animation](https://sammysteiner.github.io/blog/2017/04/13/bringing-terminal-applications-to-life-cli-animations-with-ruby/)
+---
+
+Many thanks to everyones in the "Tom" cohort, and the TCFs for the help, knowledge and the laughs that made this Module One Project possible and also fun, cheers!
