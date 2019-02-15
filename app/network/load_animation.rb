@@ -10,3 +10,11 @@ def load_battle_animation
     i += 1
   end
 end
+
+def text_anim(string)
+  string.each_char do |chr|
+    print chr
+    sleep(0.05)
+  end
+  puts "\n"
+end

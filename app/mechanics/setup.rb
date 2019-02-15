@@ -12,7 +12,7 @@ def battle_setup(user)
 
   random.map! { |pokemon| pokemon.name.capitalize  }
 
-  prompt.say("Whoa! A horde of wild Pokemon appeared!")
+  text_anim("Whoa! A horde of wild Pokemon appeared!")
   sleep(1)
 
   until false
@@ -31,7 +31,7 @@ def trainer_setup(user)
   # Searches if other trainers(users) exist or have PKMN caught,
   # if FALSE, then takes you back to User Menu
   if User.all.length == 1 || user.user_pkmns.count == 0
-    puts "Currently there are no other trainers, bringing you back to the main menu!"
+    text_anim("Currently there are no other trainers, bringing you back to the main menu!")
     sleep(1.5)
     display_user_menu(user)
   else
@@ -42,13 +42,13 @@ def trainer_setup(user)
     # Checks both User and Trainer fatigue,
     # if either or are fatigue then cancels battle and reduces fatigue level
     if user_pokemons == []
-      puts "All of your Pokemons are too tired to battle!"
-      puts "Please check back soon!"
+      text_anim("All of your Pokemons are too tired to battle!")
+      text_anim("Please check back soon!")
       min_fatigue(UserPkmn.all.where user_id: user.id)
       sleep(1.5)
     elsif opp_pokemons == []
-      puts "All of your opponent's Pokemons are too tired to battle!"
-      puts "Please check back for another oppoenent!"
+      text_anim("All of your opponent's Pokemons are too tired to battle!")
+      text_anim("Please check back for another oppoenent!")
       min_fatigue(UserPkmn.all.where user_id: opp.id)
       min_fatigue(UserPkmn.all.where user_id: user.id)
       sleep(1.5)
@@ -59,7 +59,7 @@ def trainer_setup(user)
 
       until false
         user_party = prompt.multi_select("Select up to 6 of your captured non-fatigued Pokemons!", user_pokemon_list, per_page: 12)
-        break if user_party.length < 6
+        break if user_party.length <= 6
       end
 
       # User fatigue mechanic
@@ -87,7 +87,7 @@ def trainer_setup(user)
       min_fatigue(user_nc)
       min_fatigue(opp_nc)
 
-      puts "#{opp.name} challenges you to a Pokemon battle!"
+      text_anim("#{opp.name} challenges you to a Pokemon battle!")
       sleep(1)
       user.battle(user_party, opp_party, true)
     end
