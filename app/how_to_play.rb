@@ -1,12 +1,21 @@
+############################################
+## ---------- H2P MENU METHOD ------------##
+############################################
+
 def how_to_play_menu
   system "clear"
   load_logo_ascii
+
   prompt.select("HOW TO PLAY\n") do |menu|
     menu.choice "Type Chart", -> {load_type_chart}
     menu.choice "Battle Rules", -> {load_battle_rules}
     menu.choice "Go Back", -> {log_in_menu}
   end
 end
+
+############################################
+## ----------- MENU CHOICES --------------##
+############################################
 
 def load_type_chart
   system "clear"

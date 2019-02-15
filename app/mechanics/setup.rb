@@ -1,11 +1,13 @@
-require "pry"
-def setup2(user)
+############################################
+## ---------- SETUP METHODS --------------##
+############################################
+
+def battle_setup(user)
   stop_music
   load_battle_music
   sleep(1)
   load_battle_animation
   system "clear"
-  prompt = TTY::Prompt.new(active_color: :cyan)
   random = Pkmn.all.sample(12)
 
   random.map! { |pokemon| pokemon.name.capitalize  }
@@ -19,14 +21,15 @@ def setup2(user)
   end
 
   opp_party = random - user_party
-  user.battle2(user_party, opp_party, false)
+  user.battle(user_party, opp_party, false)
 end
 
 def trainer_setup(user)
   stop_music
   load_trainer_battle_music
-  prompt = TTY::Prompt.new(active_color: :cyan)
 
+  # Searches if other trainers(users) exist or have PKMN caught,
+  # if FALSE, then takes you back to User Menu
   if User.all.length == 1 || user.user_pkmns.count == 0
     puts "Currently there are no other trainers, bringing you back to the main menu!"
     sleep(1.5)
@@ -36,13 +39,15 @@ def trainer_setup(user)
     opp = find_opp(user)
     opp_pokemons = (UserPkmn.all.where user_id: opp.id, captured: true).where("fatigue < ?", 2)
 
+    # Checks both User and Trainer fatigue,
+    # if either or are fatigue then cancels battle and reduces fatigue level
     if user_pokemons == []
       puts "All of your Pokemons are too tired to battle!"
       puts "Please check back soon!"
       min_fatigue(UserPkmn.all.where user_id: user.id)
       sleep(1.5)
     elsif opp_pokemons == []
-      puts "All of your opponent's Pokemons are too tried to battle!"
+      puts "All of your opponent's Pokemons are too tired to battle!"
       puts "Please check back for another oppoenent!"
       min_fatigue(UserPkmn.all.where user_id: opp.id)
       min_fatigue(UserPkmn.all.where user_id: user.id)
@@ -57,7 +62,7 @@ def trainer_setup(user)
         break if user_party.length < 6
       end
 
-      # user fatigue mechanic.
+      # User fatigue mechanic
       user_hash1 = {}
       user_hash1[:name] = user_party.map(&:downcase)
       user_arr = (Pkmn.all.where(user_hash1)).map{|pokemon| pokemon.id}
@@ -67,7 +72,7 @@ def trainer_setup(user)
       user_c = user_pokemons.where(user_hash2)
       user_nc = user_pokemons.where.not(user_hash2)
 
-      # opponent fatigure mechanic.
+      # Opponent fatigue mechanic
       opp_hash1 = {}
       opp_hash1[:name] = opp_party.map(&:downcase)
       opp_arr = (Pkmn.all.where(opp_hash1)).map{|pokemon| pokemon.id}
@@ -84,10 +89,14 @@ def trainer_setup(user)
 
       puts "#{opp.name} challenges you to a Pokemon battle!"
       sleep(1)
-      user.battle2(user_party, opp_party, true)
+      user.battle(user_party, opp_party, true)
     end
   end
 end
+
+############################################
+## ---------- HELPER METHODS -------------##
+############################################
 
 def add_fatigue(arr)
   arr.each do |row|

@@ -1,16 +1,16 @@
-def display_user_menu(user)
-  # system "clear"
-  # stop_music
-  # load_user_menu_music
-  prompt = TTY::Prompt.new(active_color: :cyan)
+############################################
+## --------- USER MENU METHOD ------------##
+############################################
 
+def display_user_menu(user)
   until false
     system "clear"
     load_menu_ascii
     stop_music
     load_user_menu_music
+
     prompt.select("\n#{user.name.upcase}\'s MENU \n", per_page: 8) do |menu|
-      menu.choice "Battle!", -> {setup2(user)}
+      menu.choice "Battle!", -> {battle_setup(user)}
       menu.choice "Trainer Battle!", -> {trainer_setup(user)}
       menu.choice "Battle Record", -> {battle_record(user)}
       menu.choice "My Pokemon", -> {my_pokemon(user)}
@@ -22,9 +22,12 @@ def display_user_menu(user)
   end
 end
 
+############################################
+## ----------- MENU CHOICES --------------##
+############################################
+
 def delete_data(user)
   system "clear"
-  prompt = TTY::Prompt.new(active_color: :cyan)
   input = prompt.select("Are you sure about deleting your data?") do |menu|
     menu.choice "I'm sure", 1
     menu.choice "Nevermind"
@@ -41,8 +44,6 @@ def delete_data(user)
 end
 
 def change_name(user)
-  prompt = TTY::Prompt.new(active_color: :cyan)
-
   new_name = prompt.ask("Enter your new name:") do |q|
     q.required true
   end
@@ -52,8 +53,6 @@ def change_name(user)
 end
 
 def nickname_pkmn(user)
-  prompt = TTY::Prompt.new(active_color: :cyan)
-
   user_pokemons = (UserPkmn.all.where user_id: user.id, captured: true)
   user_choices = user_pokemons.map { |list| list.pkmn.name.capitalize  }
   user_choices << "Exit"
@@ -61,11 +60,11 @@ def nickname_pkmn(user)
 
   display_user_menu(user) if choice == "Exit"
 
-  nn_change_pkmn = user_pokemons.find_by pkmn_id: (Pkmn.all.find_by name: choice.downcase)
+  pokemon = user_pokemons.find_by pkmn_id: (Pkmn.all.find_by name: choice.downcase)
   puts "\n"
-  new_nn = prompt.ask("Your #{choice} is currently nicknamed \"#{nn_change_pkmn.nickname}\". Enter a new nickname:", default: nn_change_pkmn.nickname)
+  new_nickname = prompt.ask("Your #{choice} is currently nicknamed \"#{pokemon.nickname}\". Enter a new nickname:", default: pokemon.nickname)
 
-  UserPkmn.all.update(nn_change_pkmn.id, nickname: new_nn)
+  UserPkmn.all.update(pokemon.id, nickname: new_nickname)
 end
 
 def my_pokemon(user)

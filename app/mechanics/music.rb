@@ -1,3 +1,7 @@
+############################################
+## --------- PLAYBACK METHODS ------------##
+############################################
+
 def play_music(file)
     fork{ exec 'afplay', "#{file}"}
 end
@@ -6,6 +10,10 @@ def stop_music
   fork{ exec 'killall', 'afplay'}
   sleep(0.1)
 end
+
+############################################
+## -------- LOAD MUSIC METHODS -----------##
+############################################
 
 def load_intro_music
   play_music("sound/pkmn-opening.mp3")
