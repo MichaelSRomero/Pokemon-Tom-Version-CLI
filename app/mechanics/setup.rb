@@ -12,7 +12,7 @@ def battle_setup(user)
 
   random.map! { |pokemon| pokemon.name.capitalize  }
 
-  text_anim("Whoa! A horde of wild Pokemon appeared!")
+  text_animation("Whoa! A horde of wild Pokemon appeared!")
   sleep(1)
 
   until false
@@ -31,7 +31,7 @@ def trainer_setup(user)
   # Searches if other trainers(users) exist or have PKMN caught,
   # if FALSE, then takes you back to User Menu
   if User.all.length == 1 || user.user_pkmns.count == 0
-    text_anim("Currently there are no other trainers, bringing you back to the main menu!")
+    text_animation("Currently there are no other trainers, bringing you back to the main menu!")
     sleep(1.5)
     display_user_menu(user)
   else
@@ -42,13 +42,13 @@ def trainer_setup(user)
     # Checks both User and Trainer fatigue,
     # if either or are fatigue then cancels battle and reduces fatigue level
     if user_pokemons == []
-      text_anim("All of your Pokemons are too tired to battle!")
-      text_anim("Please check back soon!")
+      text_animation("All of your Pokemons are too tired to battle!")
+      text_animation("Please check back soon!")
       min_fatigue(UserPkmn.all.where user_id: user.id)
       sleep(1.5)
     elsif opp_pokemons == []
-      text_anim("All of your opponent's Pokemons are too tired to battle!")
-      text_anim("Please check back for another oppoenent!")
+      text_animation("All of your opponent's Pokemons are too tired to battle!")
+      text_animation("Please check back for another oppoenent!")
       min_fatigue(UserPkmn.all.where user_id: opp.id)
       min_fatigue(UserPkmn.all.where user_id: user.id)
       sleep(1.5)
@@ -87,7 +87,7 @@ def trainer_setup(user)
       min_fatigue(user_nc)
       min_fatigue(opp_nc)
 
-      text_anim("#{opp.name} challenges you to a Pokemon battle!")
+      text_animation("#{opp.name} challenges you to a Pokemon battle!")
       sleep(1)
       user.battle(user_party, opp_party, true)
     end

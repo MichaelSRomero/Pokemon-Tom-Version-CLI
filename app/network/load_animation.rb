@@ -11,7 +11,7 @@ def load_battle_animation
   end
 end
 
-def text_anim(string)
+def text_animation(string)
   string.each_char do |chr|
     print chr
     sleep(0.05)
